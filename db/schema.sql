@@ -1,0 +1,16 @@
+CREATE TABLE movies (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  year INT NOT NULL,
+  genre VARCHAR(100) NOT NULL,
+  director VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE reviews (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  reviewer_name VARCHAR(100) NOT NULL,
+  rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  comment TEXT,
+  movie_id INT,
+  FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
+);
