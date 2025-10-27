@@ -1,0 +1,34 @@
+<%- include('partials/header') %>
+
+<div class="hero">
+  <h1>Welkom bij FilmReview</h1>
+  <p>Ontdek en review je favoriete films</p>
+</div>
+
+<div class="card-grid">
+  <div class="card">
+    <h2>🎥 Films</h2>
+    <p>Bekijk onze collectie films</p>
+    <a href="/movies" class="btn">Bekijk Films</a>
+  </div>
+
+  <div class="card">
+    <h2>⭐ Reviews</h2>
+    <p>Lees wat anderen vinden</p>
+    <a href="/reviews" class="btn">Bekijk Reviews</a>
+  </div>
+
+  <div class="card">
+    <h2>📝 API Docs</h2>
+    <p>Integreer met onze API</p>
+    <div class="api-info">
+      <p><strong>Endpoints:</strong></p>
+      <ul>
+        <li>GET /api/movies</li>
+        <li>GET /api/reviews</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

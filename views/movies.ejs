@@ -1,0 +1,20 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <h1>Films</h1>
+  <p>Bekijk alle beschikbare films</p>
+</div>
+
+<div id="movies-container" class="loading">
+  <p>Films laden...</p>
+</div>
+
+<div id="movies-list" class="card-grid" style="display: none;">
+  <!-- Films worden hier via JavaScript geladen -->
+</div>
+
+<div id="error-message" class="error" style="display: none;">
+  <!-- Error berichten worden hier getoond -->
+</div>
+
+<%- include('partials/footer') %>
