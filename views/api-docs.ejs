@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f4f4f4;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 2rem 0;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      opacity: 0.9;
+    }
+
+    .endpoint {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .method {
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: white;
+    }
+
+    .method.get { background: #61affe; }
+    .method.post { background: #49cc90; }
+    .method.put { background: #fca130; }
+    .method.delete { background: #f93e3e; }
+
+    .endpoint-path {
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      color: #2c3e50;
+    }
+
+    .auth-required {
+      display: inline-block;
+      background: #e74c3c;
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-left: 1rem;
+    }
+
+    .auth-admin {
+      background: #9b59b6;
+    }
+
+    .description {
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    .params, .response {
+      margin-top: 1rem;
+    }
+
+    .params h4, .response h4 {
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+    }
+
+    .param-list {
+      list-style: none;
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 4px;
+      border-left: 4px solid #61affe;
+    }
+
+    .param-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .param-list li:last-child {
+      border-bottom: none;
+    }
+
+    .param-name {
+      font-family: 'Courier New', monospace;
+      color: #e74c3c;
+      font-weight: bold;
+    }
+
+    .param-type {
+      color: #9b59b6;
+      font-style: italic;
+    }
+
+    code {
+      background: #f8f9fa;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      color: #e74c3c;
+    }
+
+    pre {
+      background: #2c3e50;
+      color: #f8f9fa;
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+      margin-top: 0.5rem;
+    }
+
+    .section {
+      background: white;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 0.5rem;
+    }
+
+    .note {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>📚 FilmReview API Documentation</h1>
+      <p>Complete reference voor alle API endpoints</p>
+      <p>Base URL: <code>http://localhost:3000</code></p>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Authentication Section -->
+    <div class="section">
+      <h2>🔐 Authentication</h2>
+      <p>Sommige endpoints vereisen authenticatie. Gebruik een JWT token in de Authorization header:</p>
+      <pre>Authorization: Bearer YOUR_JWT_TOKEN</pre>
+      <div class="note">
+        <strong>Test gebruikers:</strong><br>
+        Admin: username: <code>admin</code>, password: <code>admin123</code><br>
+        User: username: <code>user</code>, password: <code>user123</code>
+      </div>
+    </div>
+
+    <!-- Auth Endpoints -->
+    <div class="section">
+      <h2>👤 Authentication Endpoints</h2>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method post">POST</span>
+          <span class="endpoint-path">/api/auth/login</span>
+        </div>
+        <p class="description">Inloggen en JWT token verkrijgen</p>
+        <div class="params">
+          <h4>Request Body:</h4>
+          <ul class="param-list">
+            <li><span class="param-name">username</span> <span class="param-type">(string, required)</span> - Gebruikersnaam</li>
+            <li><span class="param-name">password</span> <span class="param-type">(string, required)</span> - Wachtwoord</li>
+          </ul>
+        </div>
+        <div class="response">
+          <h4>Response (200 OK):</h4>
+          <pre>{
+  "message": "Login successful",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": 1,
+    "username": "admin",
+    "email": "admin@filmreview.com",
+    "role": "admin"
+  }
+}</pre>
+        </div>
+      </div>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method post">POST</span>
+          <span class="endpoint-path">/api/auth/register</span>
+        </div>
+        <p class="description">Nieuwe gebruiker registreren</p>
+        <div class="params">
+          <h4>Request Body:</h4>
+          <ul class="param-list">
+            <li><span class="param-name">username</span> <span class="param-type">(string, required)</span> - Gebruikersnaam (min 3 tekens, geen spaties)</li>
+            <li><span class="param-name">email</span> <span class="param-type">(string, required)</span> - Email adres</li>
+            <li><span class="param-name">password</span> <span class="param-type">(string, required)</span> - Wachtwoord (min 6 tekens)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method get">GET</span>
+          <span class="endpoint-path">/api/auth/me</span>
+          <span class="auth-required">🔒 Auth Required</span>
+        </div>
+        <p class="description">Huidige ingelogde gebruiker ophalen</p>
+      </div>
+    </div>
+
+    <!-- Movies Endpoints -->
+    <div class="section">
+      <h2>🎬 Movies Endpoints</h2>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method get">GET</span>
+          <span class="endpoint-path">/api/movies</span>
+        </div>
+        <p class="description">Alle films ophalen met pagination ondersteuning</p>
+        <div class="params">
+          <h4>Query Parameters:</h4>
+          <ul class="param-list">
+            <li><span class="param-name">limit</span> <span class="param-type">(number, optional)</span> - Aantal resultaten per pagina (default: 10, max: 100)</li>
+            <li><span class="param-name">offset</span> <span class="param-type">(number, optional)</span> - Startpositie (default: 0)</li>
+          </ul>
+        </div>
+        <div class="response">
+          <h4>Response (200 OK):</h4>
+          <pre>{
+  "data": [...],
+  "pagination": {
+    "total": 3,
+    "limit": 10,
+    "offset": 0,
+    "count": 3,
+    "hasMore": false
+  }
+}</pre>
+        </div>
+      </div>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method get">GET</span>
+          <span class="endpoint-path">/api/movies/search</span>
+        </div>
+        <p class="description">Zoek films op basis van verschillende criteria</p>
+        <div class="params">
+          <h4>Query Parameters (minimaal één vereist):</h4>
+          <ul class="param-list">
+            <li><span class="param-name">title</span> <span class="param-type">(string)</span> - Zoek op titel (partial match)</li>
+            <li><span class="param-name">genre</span> <span class="param-type">(string)</span> - Zoek op genre (partial match)</li>
+            <li><span class="param-name">director</span> <span class="param-type">(string)</span> - Zoek op regisseur (partial match)</li>
+            <li><span class="param-name">year</span> <span class="param-type">(number)</span> - Zoek op jaar (exact match)</li>
+          </ul>
+        </div>
+        <div class="response">
+          <h4>Voorbeeld:</h4>
+          <code>GET /api/movies/search?title=inception&genre=sci-fi</code>
+        </div>
+      </div>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method get">GET</span>
+          <span class="endpoint-path">/api/movies/:id</span>
+        </div>
+        <p class="description">Specifieke film ophalen op basis van ID</p>
+      </div>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method post">POST</span>
+          <span class="endpoint-path">/api/movies</span>
+          <span class="auth-required auth-admin">🔒 Admin Only</span>
+        </div>
+        <p class="description">Nieuwe film toevoegen</p>
+        <div class="params">
+          <h4>Request Body:</h4>
+          <ul class="param-list">
+            <li><span class="param-name">title</span> <span class="param-type">(string, required)</span> - Titel van de film</li>
+            <li><span class="param-name">year</span> <span class="param-type">(number, required)</span> - Jaar (1888-2100)</li>
+            <li><span class="param-name">genre</span> <span class="param-type">(string, required)</span> - Genre</li>
+            <li><span class="param-name">director</span> <span class="param-type">(string, required)</span> - Regisseur</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method put">PUT</span>
+          <span class="endpoint-path">/api/movies/:id</span>
+          <span class="auth-required auth-admin">🔒 Admin Only</span>
+        </div>
+        <p class="description">Bestaande film updaten</p>
+      </div>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method delete">DELETE</span>
+          <span class="endpoint-path">/api/movies/:id</span>
+          <span class="auth-required auth-admin">🔒 Admin Only</span>
+        </div>
+        <p class="description">Film verwijderen (verwijdert ook automatisch alle gekoppelde reviews)</p>
+      </div>
+    </div>
+
+    <!-- Reviews Endpoints -->
+    <div class="section">
+      <h2>⭐ Reviews Endpoints</h2>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method get">GET</span>
+          <span class="endpoint-path">/api/reviews</span>
+        </div>
+        <p class="description">Alle reviews ophalen</p>
+      </div>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method get">GET</span>
+          <span class="endpoint-path">/api/reviews/:id</span>
+        </div>
+        <p class="description">Specifieke review ophalen op basis van ID</p>
+      </div>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method post">POST</span>
+          <span class="endpoint-path">/api/reviews</span>
+          <span class="auth-required">🔒 Auth Required</span>
+        </div>
+        <p class="description">Nieuwe review toevoegen (ingelogde gebruikers)</p>
+        <div class="params">
+          <h4>Request Body:</h4>
+          <ul class="param-list">
+            <li><span class="param-name">reviewer_name</span> <span class="param-type">(string, required)</span> - Naam van de reviewer</li>
+            <li><span class="param-name">rating</span> <span class="param-type">(number, required)</span> - Rating (1-5)</li>
+            <li><span class="param-name">comment</span> <span class="param-type">(string, optional)</span> - Commentaar</li>
+            <li><span class="param-name">movie_id</span> <span class="param-type">(number, required)</span> - ID van de film</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method put">PUT</span>
+          <span class="endpoint-path">/api/reviews/:id</span>
+          <span class="auth-required auth-admin">🔒 Admin Only</span>
+        </div>
+        <p class="description">Bestaande review updaten</p>
+      </div>
+
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="method delete">DELETE</span>
+          <span class="endpoint-path">/api/reviews/:id</span>
+          <span class="auth-required auth-admin">🔒 Admin Only</span>
+        </div>
+        <p class="description">Review verwijderen</p>
+      </div>
+    </div>
+
+    <!-- Error Responses -->
+    <div class="section">
+      <h2>⚠️ Error Responses</h2>
+      <p>Alle endpoints kunnen de volgende error responses teruggeven:</p>
+      <ul class="param-list">
+        <li><strong>400 Bad Request</strong> - Ongeldige of ontbrekende parameters</li>
+        <li><strong>401 Unauthorized</strong> - Geen of ongeldige authenticatie</li>
+        <li><strong>403 Forbidden</strong> - Onvoldoende rechten</li>
+        <li><strong>404 Not Found</strong> - Resource niet gevonden</li>
+        <li><strong>409 Conflict</strong> - Conflict (bijv. duplicate username)</li>
+        <li><strong>500 Internal Server Error</strong> - Server fout</li>
+      </ul>
+      <div class="response">
+        <h4>Error Format:</h4>
+        <pre>{
+  "error": "Beschrijving van de fout"
+}</pre>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
