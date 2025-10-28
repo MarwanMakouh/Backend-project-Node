@@ -22,12 +22,15 @@ async function loadMovies() {
   const errorMessage = document.getElementById('error-message');
 
   try {
-    const movies = await fetchData('/movies');
+    const response = await fetchData('/movies');
+
+    // Handle pagination response format
+    const movies = response.data || response;
 
     container.style.display = 'none';
     moviesList.style.display = 'grid';
 
-    if (movies.length === 0) {
+    if (!movies || movies.length === 0) {
       moviesList.innerHTML = '<p class="loading">Geen films gevonden.</p>';
       return;
     }
@@ -36,17 +39,17 @@ async function loadMovies() {
       <div class="card movie-card">
         <h3>${escapeHtml(movie.title || 'Onbekende titel')}</h3>
         <div class="movie-meta">
-          ${movie.release_year ? `<span>📅 ${escapeHtml(movie.release_year)}</span>` : ''}
+          ${movie.year ? `<span>📅 ${escapeHtml(movie.year)}</span>` : ''}
           ${movie.genre ? `<span>🎭 ${escapeHtml(movie.genre)}</span>` : ''}
           ${movie.director ? `<span>🎬 ${escapeHtml(movie.director)}</span>` : ''}
         </div>
-        ${movie.description ? `<p class="movie-description">${escapeHtml(movie.description)}</p>` : ''}
       </div>
     `).join('');
   } catch (error) {
     container.style.display = 'none';
     errorMessage.style.display = 'block';
     errorMessage.textContent = 'Er is een fout opgetreden bij het laden van de films. Controleer of de database verbinding werkt.';
+    console.error('Load movies error:', error);
   }
 }
 

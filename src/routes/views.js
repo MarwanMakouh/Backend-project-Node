@@ -1,14 +1,14 @@
 import express from "express";
 const router = express.Router();
 
-// API Documentation (root)
+// Home pagina (root)
 router.get("/", (req, res) => {
-  res.render("api-docs", { title: "FilmReview API Documentation" });
+  res.render("index", { title: "FilmReview - Home" });
 });
 
-// Home pagina
-router.get("/home", (req, res) => {
-  res.render("index", { title: "FilmReview - Home" });
+// API Documentation
+router.get("/api-docs", (req, res) => {
+  res.render("api-docs", { title: "FilmReview API Documentation" });
 });
 
 // Movies overzicht

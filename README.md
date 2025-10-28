@@ -147,7 +147,7 @@ npm run dev
 
 ## 📚 API Endpoints
 
-**Complete documentatie:** Open je browser en ga naar `http://localhost:3000` voor de volledige interactieve API documentatie.
+**Complete documentatie:** Open je browser en ga naar `http://localhost:3000/api-docs` voor de volledige interactieve API documentatie.
 
 ### Overzicht
 
@@ -282,7 +282,7 @@ Backend-project-Node/
 - ✅ Basisvalidatie (geen lege velden, type checks, etc.)
 - ✅ Minstens één endpoint met limit en offset (GET /api/movies)
 - ✅ Minstens één endpoint met zoekfunctionaliteit (GET /api/movies/search)
-- ✅ API documentatie pagina op root URL (http://localhost:3000)
+- ✅ API documentatie pagina (http://localhost:3000/api-docs)
 - ✅ Node.js versie 20+
 - ✅ Express framework
 - ✅ Database connectie (MySQL)
