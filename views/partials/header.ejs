@@ -5,16 +5,121 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= title %> - FilmReview</title>
   <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      color: white;
+    }
+
+    .user-role {
+      background: #e74c3c;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    .btn-logout {
+      padding: 0.5rem 1rem;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s;
+    }
+
+    .btn-logout:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .btn-login {
+      padding: 0.5rem 1rem;
+      background: white;
+      color: #2c3e50;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: transform 0.2s;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+    }
+  </style>
 </head>
 <body>
   <nav class="navbar">
     <div class="container">
       <a href="/" class="logo">🎬 FilmReview</a>
-      <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/movies">Films</a></li>
-        <li><a href="/reviews">Reviews</a></li>
-      </ul>
+      <div style="display: flex; gap: 2rem; align-items: center;">
+        <ul class="nav-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/movies">Films</a></li>
+          <li><a href="/reviews">Reviews</a></li>
+          <li><a href="/api-docs">API</a></li>
+        </ul>
+        <div class="nav-right">
+          <div id="auth-section">
+            <!-- Auth buttons will be loaded here -->
+          </div>
+        </div>
+      </div>
     </div>
   </nav>
   <main class="container">
+
+  <script>
+    // Load auth section
+    document.addEventListener('DOMContentLoaded', () => {
+      const authSection = document.getElementById('auth-section');
+      const token = localStorage.getItem('authToken');
+      const userStr = localStorage.getItem('user');
+
+      if (token && userStr) {
+        const user = JSON.parse(userStr);
+        authSection.innerHTML = `
+          <div class="user-info">
+            <span>👤 ${user.username}</span>
+            ${user.role === 'admin' ? '<span class="user-role">ADMIN</span>' : ''}
+          </div>
+          <button class="btn-logout" onclick="logout()">Uitloggen</button>
+        `;
+      } else {
+        authSection.innerHTML = `
+          <a href="/login" class="btn-login">Inloggen</a>
+        `;
+      }
+    });
+
+    function logout() {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+      window.location.href = '/login';
+    }
+  </script>

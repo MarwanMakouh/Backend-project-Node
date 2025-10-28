@@ -21,4 +21,14 @@ router.get("/reviews", (req, res) => {
   res.render("reviews", { title: "Reviews" });
 });
 
+// Login pagina
+router.get("/login", (req, res) => {
+  res.render("login", { title: "Inloggen - FilmReview" });
+});
+
+// Register pagina
+router.get("/register", (req, res) => {
+  res.render("register", { title: "Registreren - FilmReview" });
+});
+
 export default router;

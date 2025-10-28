@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .auth-container {
+      max-width: 450px;
+      margin: 3rem auto;
+      padding: 2rem;
+    }
+
+    .auth-card {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .auth-card h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+    }
+
+    .auth-card p {
+      text-align: center;
+      color: #7f8c8d;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #2c3e50;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .form-group input.error {
+      border-color: #e74c3c;
+    }
+
+    .form-hint {
+      font-size: 0.85rem;
+      color: #7f8c8d;
+      margin-top: 0.3rem;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 0.85rem;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-primary:hover {
+      background: #2980b9;
+    }
+
+    .btn-primary:disabled {
+      background: #95a5a6;
+      cursor: not-allowed;
+    }
+
+    .error-message {
+      background: #fee;
+      color: #c33;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+
+    .success-message {
+      background: #efe;
+      color: #3c3;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .auth-footer a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      color: #7f8c8d;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      color: #3498db;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card">
+      <h1>📝 Registreren</h1>
+      <p>Maak een account aan voor FilmReview</p>
+
+      <div id="error-message" class="error-message"></div>
+      <div id="success-message" class="success-message"></div>
+
+      <form id="register-form">
+        <div class="form-group">
+          <label for="username">Gebruikersnaam</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            required
+            minlength="3"
+            autocomplete="username"
+            placeholder="Kies een gebruikersnaam"
+          >
+          <div class="form-hint">Minimaal 3 tekens, geen spaties</div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            autocomplete="email"
+            placeholder="jouw@email.com"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="password">Wachtwoord</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            minlength="6"
+            autocomplete="new-password"
+            placeholder="Kies een wachtwoord"
+          >
+          <div class="form-hint">Minimaal 6 tekens</div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Bevestig wachtwoord</label>
+          <input
+            type="password"
+            id="confirm-password"
+            name="confirm-password"
+            required
+            minlength="6"
+            autocomplete="new-password"
+            placeholder="Herhaal je wachtwoord"
+          >
+        </div>
+
+        <button type="submit" class="btn-primary" id="submit-btn">
+          Registreren
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <p>Heb je al een account? <a href="/login">Log hier in</a></p>
+      </div>
+
+      <a href="/" class="back-link">← Terug naar home</a>
+    </div>
+  </div>
+
+  <script src="/js/auth.js"></script>
+</body>
+</html>
