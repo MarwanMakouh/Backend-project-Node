@@ -1,5 +1,6 @@
 import express from "express";
 import connection from "../config/db.js";
+import { authenticateToken, isAdmin } from "../middleware/auth.js";
 const router = express.Router();
 
 // GET all reviews
@@ -27,8 +28,8 @@ router.get("/:id", (req, res) => {
   });
 });
 
-// POST - Create new review
-router.post("/", (req, res) => {
+// POST - Create new review (Authenticated users only)
+router.post("/", authenticateToken, (req, res) => {
   const { reviewer_name, rating, comment, movie_id } = req.body;
 
   // Basic validation
@@ -74,8 +75,8 @@ router.post("/", (req, res) => {
   });
 });
 
-// PUT - Update review
-router.put("/:id", (req, res) => {
+// PUT - Update review (Admin only)
+router.put("/:id", authenticateToken, isAdmin, (req, res) => {
   const { id } = req.params;
   const { reviewer_name, rating, comment, movie_id } = req.body;
 
@@ -131,8 +132,8 @@ router.put("/:id", (req, res) => {
   });
 });
 
-// DELETE review
-router.delete("/:id", (req, res) => {
+// DELETE review (Admin only)
+router.delete("/:id", authenticateToken, isAdmin, (req, res) => {
   const { id } = req.params;
 
   // First check if review exists

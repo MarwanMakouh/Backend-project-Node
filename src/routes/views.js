@@ -1,8 +1,13 @@
 import express from "express";
 const router = express.Router();
 
-// Home pagina
+// API Documentation (root)
 router.get("/", (req, res) => {
+  res.render("api-docs", { title: "FilmReview API Documentation" });
+});
+
+// Home pagina
+router.get("/home", (req, res) => {
   res.render("index", { title: "FilmReview - Home" });
 });
 
