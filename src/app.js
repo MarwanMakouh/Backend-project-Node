@@ -4,6 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import moviesRoutes from "./routes/movies.js";
 import reviewsRoutes from "./routes/reviews.js";
+import authRoutes from "./routes/auth.js";
 import viewRoutes from "./routes/views.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -27,6 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/", viewRoutes);
 
 // API routes
+app.use("/api/auth", authRoutes);
 app.use("/api/movies", moviesRoutes);
 app.use("/api/reviews", reviewsRoutes);
 
