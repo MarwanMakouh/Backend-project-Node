@@ -88,7 +88,7 @@ async function loadReviews() {
   }
 }
 
-// Display reviews
+// Display reviews (same style as movies)
 function displayReviews(reviews) {
   const reviewsList = document.getElementById('reviews-list');
 
@@ -103,24 +103,24 @@ function displayReviews(reviews) {
     const stars = '⭐'.repeat(review.rating || 0);
 
     return `
-      <div class="review-card">
-        <div class="review-header">
+      <div class="movie-card review-full-card">
+        <div class="movie-header">
           <div>
             <h3>${escapeHtml(review.movie_title || 'Onbekende film')}</h3>
             <p class="reviewer">door ${escapeHtml(review.reviewer_name || 'Anoniem')}</p>
           </div>
-          <div class="review-rating">
-            <span class="stars">${stars}</span>
-            <span class="rating-number">${review.rating}/5</span>
+          <div class="movie-avg-rating">
+            ${stars} ${review.rating}/5
           </div>
         </div>
         ${review.comment ? `
-          <div class="review-comment">
-            <p>${escapeHtml(review.comment)}</p>
+          <div class="movie-details">
+            <p><strong>💬 Review:</strong></p>
+            <p class="review-comment-text">${escapeHtml(review.comment)}</p>
           </div>
-        ` : ''}
+        ` : '<p class="no-comment">Geen commentaar</p>'}
         ${isUserAdmin ? `
-          <div class="review-actions">
+          <div class="movie-actions">
             <button class="btn btn-small btn-danger" onclick="openDeleteReviewModal(${review.id})">
               🗑️ Verwijderen
             </button>
