@@ -4,6 +4,7 @@
 // Global variables
 let currentMovieId = null;
 let allMovies = [];
+let allReviews = [];
 
 // Helper functions
 function getToken() {
@@ -43,17 +44,22 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-// Load all movies
+// Load all movies and reviews
 async function loadMovies() {
   const container = document.getElementById('movies-container');
   const moviesList = document.getElementById('movies-list');
 
   try {
-    const response = await fetch(`${API_BASE}/movies`);
-    if (!response.ok) throw new Error('Fout bij laden films');
+    // Load movies
+    const moviesResponse = await fetch(`${API_BASE}/movies`);
+    if (!moviesResponse.ok) throw new Error('Fout bij laden films');
+    const moviesData = await moviesResponse.json();
+    allMovies = moviesData.data || moviesData;
 
-    const data = await response.json();
-    allMovies = data.data || data;
+    // Load reviews
+    const reviewsResponse = await fetch(`${API_BASE}/reviews`);
+    if (!reviewsResponse.ok) throw new Error('Fout bij laden reviews');
+    allReviews = await reviewsResponse.json();
 
     container.style.display = 'none';
     moviesList.style.display = 'grid';
@@ -76,24 +82,51 @@ function displayMovies(movies) {
 
   const isUserAdmin = isAdmin();
 
-  moviesList.innerHTML = movies.map(movie => `
-    <div class="movie-card">
-      <div class="movie-header">
-        <h3>${escapeHtml(movie.title || 'Onbekende titel')}</h3>
-      </div>
-      <div class="movie-details">
-        ${movie.year ? `<p><strong>📅 Jaar:</strong> ${escapeHtml(String(movie.year))}</p>` : ''}
-        ${movie.genre ? `<p><strong>🎭 Genre:</strong> ${escapeHtml(movie.genre)}</p>` : ''}
-        ${movie.director ? `<p><strong>🎬 Regisseur:</strong> ${escapeHtml(movie.director)}</p>` : ''}
-      </div>
-      ${isUserAdmin ? `
-        <div class="movie-actions">
-          <button class="btn btn-small btn-edit" onclick="editMovie(${movie.id})">✏️ Bewerken</button>
-          <button class="btn btn-small btn-danger" onclick="openDeleteModal(${movie.id}, '${escapeHtml(movie.title).replace(/'/g, "\\'")}')">🗑️ Verwijderen</button>
+  moviesList.innerHTML = movies.map(movie => {
+    // Get reviews for this movie
+    const movieReviews = allReviews.filter(review => review.movie_id === movie.id);
+    const avgRating = movieReviews.length > 0
+      ? (movieReviews.reduce((sum, r) => sum + r.rating, 0) / movieReviews.length).toFixed(1)
+      : null;
+
+    return `
+      <div class="movie-card">
+        <div class="movie-header">
+          <h3>${escapeHtml(movie.title || 'Onbekende titel')}</h3>
+          ${avgRating ? `<div class="movie-avg-rating">⭐ ${avgRating}/5</div>` : ''}
         </div>
-      ` : ''}
-    </div>
-  `).join('');
+        <div class="movie-details">
+          ${movie.year ? `<p><strong>📅 Jaar:</strong> ${escapeHtml(String(movie.year))}</p>` : ''}
+          ${movie.genre ? `<p><strong>🎭 Genre:</strong> ${escapeHtml(movie.genre)}</p>` : ''}
+          ${movie.director ? `<p><strong>🎬 Regisseur:</strong> ${escapeHtml(movie.director)}</p>` : ''}
+        </div>
+
+        ${movieReviews.length > 0 ? `
+          <div class="movie-reviews-section">
+            <h4>📝 Reviews (${movieReviews.length})</h4>
+            <div class="movie-reviews-list">
+              ${movieReviews.map(review => `
+                <div class="movie-review-item">
+                  <div class="review-item-header">
+                    <span class="review-item-author">${escapeHtml(review.reviewer_name)}</span>
+                    <span class="review-item-rating">${'⭐'.repeat(review.rating)}</span>
+                  </div>
+                  ${review.comment ? `<p class="review-item-comment">${escapeHtml(review.comment)}</p>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        ` : '<p class="no-reviews">Nog geen reviews voor deze film</p>'}
+
+        ${isUserAdmin ? `
+          <div class="movie-actions">
+            <button class="btn btn-small btn-edit" onclick="editMovie(${movie.id})">✏️ Bewerken</button>
+            <button class="btn btn-small btn-danger" onclick="openDeleteModal(${movie.id}, '${escapeHtml(movie.title).replace(/'/g, "\\'")}')">🗑️ Verwijderen</button>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
 }
 
 // Search movies

@@ -1,7 +1,12 @@
 import connection from "../config/db.js";
 
 export const getAllReviews = (req, res) => {
-  const sql = "SELECT * FROM reviews";
+  const sql = `
+    SELECT reviews.*, movies.title as movie_title
+    FROM reviews
+    LEFT JOIN movies ON reviews.movie_id = movies.id
+    ORDER BY reviews.id DESC
+  `;
   connection.query(sql, (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(results);
@@ -10,7 +15,12 @@ export const getAllReviews = (req, res) => {
 
 export const getReviewById = (req, res) => {
   const { id } = req.params;
-  const sql = "SELECT * FROM reviews WHERE id = ?";
+  const sql = `
+    SELECT reviews.*, movies.title as movie_title
+    FROM reviews
+    LEFT JOIN movies ON reviews.movie_id = movies.id
+    WHERE reviews.id = ?
+  `;
 
   connection.query(sql, [id], (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
