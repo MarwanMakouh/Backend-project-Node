@@ -1,20 +1,97 @@
 <%- include('partials/header') %>
 
 <div class="page-header">
-  <h1>Films</h1>
-  <p>Bekijk alle beschikbare films</p>
+  <h1>🎬 Films Beheren</h1>
+  <p>Zoek, bekijk en beheer films</p>
 </div>
 
+<!-- Search Section -->
+<div class="search-section">
+  <h2>🔍 Films Zoeken</h2>
+  <form id="search-form" class="search-form">
+    <div class="search-grid">
+      <input type="text" id="search-title" placeholder="Titel...">
+      <input type="text" id="search-genre" placeholder="Genre...">
+      <input type="text" id="search-director" placeholder="Regisseur...">
+      <input type="number" id="search-year" placeholder="Jaar...">
+    </div>
+    <div class="search-actions">
+      <button type="submit" class="btn btn-primary">Zoeken</button>
+      <button type="button" id="clear-search" class="btn btn-secondary">Reset</button>
+    </div>
+  </form>
+</div>
+
+<!-- Admin Actions -->
+<div id="admin-actions" style="display: none;">
+  <button id="add-movie-btn" class="btn btn-success">➕ Film Toevoegen</button>
+</div>
+
+<!-- Messages -->
+<div id="success-message" class="success-message" style="display: none;"></div>
+<div id="error-message" class="error-message" style="display: none;"></div>
+
+<!-- Loading -->
 <div id="movies-container" class="loading">
   <p>Films laden...</p>
 </div>
 
-<div id="movies-list" class="card-grid" style="display: none;">
+<!-- Movies List -->
+<div id="movies-list" class="movies-grid" style="display: none;">
   <!-- Films worden hier via JavaScript geladen -->
 </div>
 
-<div id="error-message" class="error" style="display: none;">
-  <!-- Error berichten worden hier getoond -->
+<!-- Add/Edit Movie Modal -->
+<div id="movie-modal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2 id="modal-title">Film Toevoegen</h2>
+    <form id="movie-form">
+      <input type="hidden" id="movie-id">
+
+      <div class="form-group">
+        <label for="movie-title">Titel *</label>
+        <input type="text" id="movie-title" required>
+      </div>
+
+      <div class="form-group">
+        <label for="movie-year">Jaar *</label>
+        <input type="number" id="movie-year" min="1888" max="2100" required>
+      </div>
+
+      <div class="form-group">
+        <label for="movie-genre">Genre *</label>
+        <input type="text" id="movie-genre" required>
+      </div>
+
+      <div class="form-group">
+        <label for="movie-director">Regisseur *</label>
+        <input type="text" id="movie-director" required>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Opslaan</button>
+        <button type="button" class="btn btn-secondary" onclick="closeMovieModal()">Annuleren</button>
+      </div>
+    </form>
+  </div>
 </div>
+
+<!-- Delete Confirmation Modal -->
+<div id="delete-modal" class="modal" style="display: none;">
+  <div class="modal-content modal-small">
+    <h2>⚠️ Film Verwijderen</h2>
+    <p>Weet je zeker dat je deze film wilt verwijderen?</p>
+    <p><strong id="delete-movie-title"></strong></p>
+    <p class="warning-text">Let op: Alle reviews van deze film worden ook verwijderd!</p>
+    <div class="form-actions">
+      <button id="confirm-delete" class="btn btn-danger">Verwijderen</button>
+      <button class="btn btn-secondary" onclick="closeDeleteModal()">Annuleren</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/auth.js"></script>
+<script src="/js/movies.js"></script>
 
 <%- include('partials/footer') %>

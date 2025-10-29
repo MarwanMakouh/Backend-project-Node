@@ -1,20 +1,78 @@
 <%- include('partials/header') %>
 
 <div class="page-header">
-  <h1>Reviews</h1>
-  <p>Bekijk alle film reviews</p>
+  <h1>⭐ Reviews Beheren</h1>
+  <p>Bekijk en plaats film reviews</p>
 </div>
 
+<!-- Add Review Section (Authenticated Users) -->
+<div id="add-review-section" class="add-review-section" style="display: none;">
+  <h2>➕ Review Toevoegen</h2>
+  <form id="add-review-form" class="review-form">
+    <div class="form-group">
+      <label for="review-movie">Film *</label>
+      <select id="review-movie" required>
+        <option value="">-- Selecteer een film --</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="review-name">Jouw Naam *</label>
+      <input type="text" id="review-name" placeholder="Bijv. John Doe" required>
+    </div>
+
+    <div class="form-group">
+      <label for="review-rating">Rating * (1-5)</label>
+      <div class="rating-input">
+        <input type="number" id="review-rating" min="1" max="5" value="5" required>
+        <div class="stars" id="star-display">
+          ⭐⭐⭐⭐⭐
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="review-comment">Commentaar (optioneel)</label>
+      <textarea id="review-comment" rows="4" placeholder="Schrijf hier je review..."></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Review Plaatsen</button>
+  </form>
+</div>
+
+<!-- Login Prompt for Non-Authenticated Users -->
+<div id="login-prompt" class="login-prompt" style="display: none;">
+  <p>🔒 Je moet ingelogd zijn om een review te plaatsen</p>
+  <a href="/login" class="btn btn-primary">Inloggen</a>
+</div>
+
+<!-- Messages -->
+<div id="success-message" class="success-message" style="display: none;"></div>
+<div id="error-message" class="error-message" style="display: none;"></div>
+
+<!-- Loading -->
 <div id="reviews-container" class="loading">
   <p>Reviews laden...</p>
 </div>
 
-<div id="reviews-list" class="reviews-grid" style="display: none;">
+<!-- Reviews List -->
+<div id="reviews-list" class="reviews-list" style="display: none;">
   <!-- Reviews worden hier via JavaScript geladen -->
 </div>
 
-<div id="error-message" class="error" style="display: none;">
-  <!-- Error berichten worden hier getoond -->
+<!-- Delete Confirmation Modal -->
+<div id="delete-review-modal" class="modal" style="display: none;">
+  <div class="modal-content modal-small">
+    <h2>⚠️ Review Verwijderen</h2>
+    <p>Weet je zeker dat je deze review wilt verwijderen?</p>
+    <div class="form-actions">
+      <button id="confirm-delete-review" class="btn btn-danger">Verwijderen</button>
+      <button class="btn btn-secondary" onclick="closeDeleteReviewModal()">Annuleren</button>
+    </div>
+  </div>
 </div>
+
+<script src="/js/auth.js"></script>
+<script src="/js/reviews.js"></script>
 
 <%- include('partials/footer') %>
