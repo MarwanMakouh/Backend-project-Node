@@ -16,6 +16,11 @@ router.get("/movies", (req, res) => {
   res.render("movies", { title: "Films" });
 });
 
+// Movie detail pagina
+router.get("/movies/:id", (req, res) => {
+  res.render("movie-detail", { title: "Film Details" });
+});
+
 // Reviews overzicht
 router.get("/reviews", (req, res) => {
   res.render("reviews", { title: "Reviews" });

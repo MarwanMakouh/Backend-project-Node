@@ -103,7 +103,7 @@ function displayReviews(reviews) {
     const stars = '⭐'.repeat(review.rating || 0);
 
     return `
-      <div class="movie-card review-full-card">
+      <div class="movie-card review-full-card" style="cursor: pointer;" onclick="window.location.href='/movies/${review.movie_id}'">
         <div class="movie-header">
           <div>
             <h3>${escapeHtml(review.movie_title || 'Onbekende film')}</h3>
@@ -121,7 +121,7 @@ function displayReviews(reviews) {
         ` : '<p class="no-comment">Geen commentaar</p>'}
         ${isUserAdmin ? `
           <div class="movie-actions">
-            <button class="btn btn-small btn-danger" onclick="openDeleteReviewModal(${review.id})">
+            <button class="btn btn-small btn-danger" onclick="event.stopPropagation(); openDeleteReviewModal(${review.id})">
               🗑️ Verwijderen
             </button>
           </div>
