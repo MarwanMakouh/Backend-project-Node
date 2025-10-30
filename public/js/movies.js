@@ -90,7 +90,7 @@ function displayMovies(movies) {
       : null;
 
     return `
-      <div class="movie-card">
+      <div class="movie-card" style="cursor: pointer;" onclick="window.location.href='/movies/${movie.id}'">
         <div class="movie-header">
           <h3>${escapeHtml(movie.title || 'Onbekende titel')}</h3>
           ${avgRating ? `<div class="movie-avg-rating">⭐ ${avgRating}/5</div>` : ''}
@@ -120,8 +120,8 @@ function displayMovies(movies) {
 
         ${isUserAdmin ? `
           <div class="movie-actions">
-            <button class="btn btn-small btn-edit" onclick="editMovie(${movie.id})">✏️ Bewerken</button>
-            <button class="btn btn-small btn-danger" onclick="openDeleteModal(${movie.id}, '${escapeHtml(movie.title).replace(/'/g, "\\'")}')">🗑️ Verwijderen</button>
+            <button class="btn btn-small btn-edit" onclick="event.stopPropagation(); editMovie(${movie.id})">✏️ Bewerken</button>
+            <button class="btn btn-small btn-danger" onclick="event.stopPropagation(); openDeleteModal(${movie.id}, '${escapeHtml(movie.title).replace(/'/g, "\\'")}')">🗑️ Verwijderen</button>
           </div>
         ` : ''}
       </div>

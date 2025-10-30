@@ -657,6 +657,192 @@ main {
 }
 
 /* ==========================================
+   MOVIE DETAIL PAGE
+   ========================================== */
+
+.header-with-back {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--card-background);
+  color: var(--text-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  transition: background-color 0.3s, transform 0.2s;
+  font-size: 1rem;
+}
+
+.btn-back:hover {
+  background-color: #3a3a3a;
+  transform: translateX(-5px);
+}
+
+.movie-detail-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.movie-detail-card {
+  background-color: var(--card-background);
+  padding: 2.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 2rem;
+}
+
+.movie-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.movie-detail-header h2 {
+  color: var(--primary-color);
+  font-size: 2rem;
+  margin: 0;
+}
+
+.movie-detail-header #admin-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.movie-detail-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.info-item span:last-child {
+  font-size: 1.1rem;
+  color: var(--text-color);
+}
+
+/* Reviews Section on Detail Page */
+.reviews-section {
+  background-color: var(--card-background);
+  padding: 2.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.reviews-section h2 {
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
+.add-review-card {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 2rem;
+}
+
+.add-review-card h3 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.info-box {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  text-align: center;
+  margin-bottom: 2rem;
+  border: 1px solid #444;
+}
+
+.info-box p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #ccc;
+}
+
+.review-card {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1.5rem;
+  border-left: 4px solid var(--primary-color);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.review-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.3);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.review-author {
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.review-rating {
+  color: #ffd700;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.review-comment {
+  color: #ccc;
+  line-height: 1.6;
+  margin-top: 0.75rem;
+}
+
+.review-comment p {
+  margin: 0;
+}
+
+.review-actions {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #444;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.no-data {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  padding: 2rem 0;
+}
+
+/* ==========================================
    RESPONSIVE DESIGN
    ========================================== */
 
@@ -699,6 +885,24 @@ main {
 
   .modal-content {
     width: 95%;
+    padding: 1.5rem;
+  }
+
+  .header-with-back {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .movie-detail-header {
+    flex-direction: column;
+  }
+
+  .movie-detail-info {
+    grid-template-columns: 1fr;
+  }
+
+  .movie-detail-card,
+  .reviews-section {
     padding: 1.5rem;
   }
 }
