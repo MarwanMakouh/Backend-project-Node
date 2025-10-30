@@ -113,11 +113,12 @@ async function loadMovieReviews() {
   const noReviews = document.getElementById('no-reviews');
 
   try {
-    // Get all reviews and filter for this movie
-    const response = await fetch(`${API_BASE}/reviews`);
+    // Get all reviews and filter for this movie (gebruik hoge limit om alle reviews te krijgen)
+    const response = await fetch(`${API_BASE}/reviews?limit=1000`);
     if (!response.ok) throw new Error('Fout bij laden reviews');
 
-    const allReviews = await response.json();
+    const reviewsData = await response.json();
+    const allReviews = reviewsData.data || reviewsData;
     movieReviews = allReviews.filter(review => review.movie_id === currentMovieId);
 
     reviewsLoading.style.display = 'none';

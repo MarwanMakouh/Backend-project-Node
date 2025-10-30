@@ -5,8 +5,8 @@ export const getAllMovies = (req, res) => {
   const offset = parseInt(req.query.offset) || 0; // Default start at 0
 
   // Validate limit and offset
-  if (limit < 1 || limit > 100) {
-    return res.status(400).json({ error: "Limit must be between 1 and 100" });
+  if (limit < 1 || limit > 10000) {
+    return res.status(400).json({ error: "Limit must be between 1 and 10000" });
   }
 
   if (offset < 0) {

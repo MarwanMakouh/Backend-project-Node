@@ -66,10 +66,11 @@ async function loadMovies() {
     allMovies = moviesData.data || moviesData;
     totalMovies = moviesData.pagination ? moviesData.pagination.total : allMovies.length;
 
-    // Load alle reviews (voor ratings)
-    const reviewsResponse = await fetch(`${API_BASE}/reviews`);
+    // Load alle reviews (voor ratings) - gebruik hoge limit om alle reviews te krijgen
+    const reviewsResponse = await fetch(`${API_BASE}/reviews?limit=1000`);
     if (!reviewsResponse.ok) throw new Error('Fout bij laden reviews');
-    allReviews = await reviewsResponse.json();
+    const reviewsData = await reviewsResponse.json();
+    allReviews = reviewsData.data || reviewsData;
 
     container.style.display = 'none';
     moviesList.style.display = 'grid';
