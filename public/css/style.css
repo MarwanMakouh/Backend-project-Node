@@ -843,6 +843,42 @@ main {
 }
 
 /* ==========================================
+   PAGINATION
+   ========================================== */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 3rem;
+  padding: 2rem 0;
+}
+
+.page-info {
+  color: var(--text-color);
+  font-size: 1.1rem;
+  font-weight: 500;
+  min-width: 120px;
+  text-align: center;
+}
+
+.pagination .btn {
+  min-width: 120px;
+}
+
+.pagination .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.pagination .btn:disabled:hover {
+  background-color: #666;
+  transform: none;
+}
+
+/* ==========================================
    RESPONSIVE DESIGN
    ========================================== */
 

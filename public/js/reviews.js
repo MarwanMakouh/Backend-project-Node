@@ -5,6 +5,11 @@
 let currentReviewId = null;
 let allMovies = [];
 
+// Pagination variables
+let currentPage = 1;
+let itemsPerPage = 20; // Kan aangepast worden
+let totalReviews = 0;
+
 // Helper functions
 function getToken() {
   return localStorage.getItem('authToken');
@@ -51,7 +56,7 @@ function escapeHtml(text) {
 // Load movies for dropdown
 async function loadMoviesDropdown() {
   try {
-    const response = await fetch(`${API_BASE}/movies`);
+    const response = await fetch(`${API_BASE}/movies?limit=1000`);
     if (!response.ok) throw new Error('Fout bij laden films');
 
     const data = await response.json();
@@ -67,24 +72,67 @@ async function loadMoviesDropdown() {
   }
 }
 
-// Load all reviews
+// Load all reviews with pagination
 async function loadReviews() {
   const container = document.getElementById('reviews-container');
   const reviewsList = document.getElementById('reviews-list');
+  const pagination = document.getElementById('reviews-pagination');
 
   try {
-    const response = await fetch(`${API_BASE}/reviews`);
+    const offset = (currentPage - 1) * itemsPerPage;
+
+    // Load reviews met paginering
+    const response = await fetch(`${API_BASE}/reviews?limit=${itemsPerPage}&offset=${offset}`);
     if (!response.ok) throw new Error('Fout bij laden reviews');
 
-    const reviews = await response.json();
+    const reviewsData = await response.json();
+    const reviews = reviewsData.data || reviewsData;
+    totalReviews = reviewsData.pagination ? reviewsData.pagination.total : reviews.length;
 
     container.style.display = 'none';
     reviewsList.style.display = 'block';
+    pagination.style.display = 'flex';
 
     displayReviews(reviews);
+    updateReviewsPagination();
   } catch (error) {
     container.style.display = 'none';
     showMessage('Fout bij laden reviews: ' + error.message, 'error');
+  }
+}
+
+// Update pagination controls
+function updateReviewsPagination() {
+  const prevBtn = document.getElementById('reviews-prev-page');
+  const nextBtn = document.getElementById('reviews-next-page');
+  const pageInfo = document.getElementById('reviews-page-info');
+
+  const totalPages = Math.ceil(totalReviews / itemsPerPage);
+
+  // Update page info
+  pageInfo.textContent = `Pagina ${currentPage} van ${totalPages}`;
+
+  // Update buttons
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = currentPage >= totalPages;
+}
+
+// Go to previous page
+function previousReviewsPage() {
+  if (currentPage > 1) {
+    currentPage--;
+    loadReviews();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+// Go to next page
+function nextReviewsPage() {
+  const totalPages = Math.ceil(totalReviews / itemsPerPage);
+  if (currentPage < totalPages) {
+    currentPage++;
+    loadReviews();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
@@ -270,6 +318,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load reviews
   loadReviews();
+
+  // Pagination event listeners
+  document.getElementById('reviews-prev-page').addEventListener('click', previousReviewsPage);
+  document.getElementById('reviews-next-page').addEventListener('click', nextReviewsPage);
 
   // Delete review button
   const confirmDeleteBtn = document.getElementById('confirm-delete-review');

@@ -6,6 +6,11 @@ let currentMovieId = null;
 let allMovies = [];
 let allReviews = [];
 
+// Pagination variables
+let currentPage = 1;
+let itemsPerPage = 10; // Kan aangepast worden
+let totalMovies = 0;
+
 // Helper functions
 function getToken() {
   return localStorage.getItem('authToken');
@@ -44,30 +49,72 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-// Load all movies and reviews
+// Load all movies and reviews with pagination
 async function loadMovies() {
   const container = document.getElementById('movies-container');
   const moviesList = document.getElementById('movies-list');
+  const pagination = document.getElementById('pagination');
 
   try {
-    // Load movies
-    const moviesResponse = await fetch(`${API_BASE}/movies`);
+    const offset = (currentPage - 1) * itemsPerPage;
+
+    // Load movies met paginering
+    const moviesResponse = await fetch(`${API_BASE}/movies?limit=${itemsPerPage}&offset=${offset}`);
     if (!moviesResponse.ok) throw new Error('Fout bij laden films');
     const moviesData = await moviesResponse.json();
-    allMovies = moviesData.data || moviesData;
 
-    // Load reviews
+    allMovies = moviesData.data || moviesData;
+    totalMovies = moviesData.pagination ? moviesData.pagination.total : allMovies.length;
+
+    // Load alle reviews (voor ratings)
     const reviewsResponse = await fetch(`${API_BASE}/reviews`);
     if (!reviewsResponse.ok) throw new Error('Fout bij laden reviews');
     allReviews = await reviewsResponse.json();
 
     container.style.display = 'none';
     moviesList.style.display = 'grid';
+    pagination.style.display = 'flex';
 
     displayMovies(allMovies);
+    updatePagination();
   } catch (error) {
     container.style.display = 'none';
     showMessage('Fout bij laden van films: ' + error.message, 'error');
+  }
+}
+
+// Update pagination controls
+function updatePagination() {
+  const prevBtn = document.getElementById('prev-page');
+  const nextBtn = document.getElementById('next-page');
+  const pageInfo = document.getElementById('page-info');
+
+  const totalPages = Math.ceil(totalMovies / itemsPerPage);
+
+  // Update page info
+  pageInfo.textContent = `Pagina ${currentPage} van ${totalPages}`;
+
+  // Update buttons
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = currentPage >= totalPages;
+}
+
+// Go to previous page
+function previousPage() {
+  if (currentPage > 1) {
+    currentPage--;
+    loadMovies();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+// Go to next page
+function nextPage() {
+  const totalPages = Math.ceil(totalMovies / itemsPerPage);
+  if (currentPage < totalPages) {
+    currentPage++;
+    loadMovies();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
@@ -157,6 +204,9 @@ async function searchMovies(e) {
     const data = await response.json();
     const movies = data.results || data;
 
+    // Verberg paginering bij zoeken
+    document.getElementById('pagination').style.display = 'none';
+
     displayMovies(movies);
     showMessage(`${movies.length} film(s) gevonden`, 'success');
   } catch (error) {
@@ -170,6 +220,7 @@ function clearSearch() {
   document.getElementById('search-genre').value = '';
   document.getElementById('search-director').value = '';
   document.getElementById('search-year').value = '';
+  currentPage = 1; // Reset naar eerste pagina
   loadMovies();
 }
 
@@ -316,6 +367,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('clear-search').addEventListener('click', clearSearch);
   document.getElementById('movie-form').addEventListener('submit', saveMovie);
   document.getElementById('confirm-delete').addEventListener('click', deleteMovie);
+
+  // Pagination event listeners
+  document.getElementById('prev-page').addEventListener('click', previousPage);
+  document.getElementById('next-page').addEventListener('click', nextPage);
 
   // Add movie button (if exists)
   const addBtn = document.getElementById('add-movie-btn');
