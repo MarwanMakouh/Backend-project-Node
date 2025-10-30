@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Redirect after 1 second
         setTimeout(() => {
-          window.location.href = '/';
+          window.location.href = '/home';
         }, 1000);
 
       } catch (error) {
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Redirect after 1 second
         setTimeout(() => {
-          window.location.href = '/';
+          window.location.href = '/home';
         }, 1000);
 
       } catch (error) {
