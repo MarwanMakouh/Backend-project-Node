@@ -1,15 +1,47 @@
 import connection from "../config/db.js";
 
 export const getAllReviews = (req, res) => {
-  const sql = `
-    SELECT reviews.*, movies.title as movie_title
-    FROM reviews
-    LEFT JOIN movies ON reviews.movie_id = movies.id
-    ORDER BY reviews.id DESC
-  `;
-  connection.query(sql, (err, results) => {
+  const limit = parseInt(req.query.limit) || 10; // Default 10 items per page
+  const offset = parseInt(req.query.offset) || 0; // Default start at 0
+
+  // Validate limit and offset
+  if (limit < 1 || limit > 100) {
+    return res.status(400).json({ error: "Limit must be between 1 and 100" });
+  }
+
+  if (offset < 0) {
+    return res.status(400).json({ error: "Offset must be 0 or greater" });
+  }
+
+  // Get total count
+  const countSql = "SELECT COUNT(*) as total FROM reviews";
+  connection.query(countSql, (err, countResults) => {
     if (err) return res.status(500).json({ error: err.message });
-    res.json(results);
+
+    const total = countResults[0].total;
+
+    // Get paginated results
+    const sql = `
+      SELECT reviews.*, movies.title as movie_title
+      FROM reviews
+      LEFT JOIN movies ON reviews.movie_id = movies.id
+      ORDER BY reviews.id DESC
+      LIMIT ? OFFSET ?
+    `;
+    connection.query(sql, [limit, offset], (err, results) => {
+      if (err) return res.status(500).json({ error: err.message });
+
+      res.json({
+        data: results,
+        pagination: {
+          total,
+          limit,
+          offset,
+          count: results.length,
+          hasMore: offset + results.length < total
+        }
+      });
+    });
   });
 };
 
