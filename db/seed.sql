@@ -4,7 +4,7 @@
 INSERT INTO users (username, email, password, role)
 VALUES
 ('admin', 'admin@filmreview.com', '$2b$10$83f7lX8Tz2LO4Xxo3TThp.apfnUhHW9zh.VlDDmH54GDmCZhHX.E2', 'admin'),
-('user', 'user@filmreview.com', '$2b$10$Y6FVbJyNvb2CArIpkygqH.bqF27eutszRyAPxiq8KkIWma2WY9d/y', 'user'),
+('user', 'user@filmreview.com', '$2b$10$83f7lX8Tz2LO4Xxo3TThp.apfnUhHW9zh.VlDDmH54GDmCZhHX.E2', 'user'),
 ('john_doe', 'john@example.com', '$2b$10$Y6FVbJyNvb2CArIpkygqH.bqF27eutszRyAPxiq8KkIWma2WY9d/y', 'user');
 
 INSERT INTO movies (title, year, genre, director)
